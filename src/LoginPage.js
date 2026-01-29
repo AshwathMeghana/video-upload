@@ -28,7 +28,7 @@ function LoginPage({ onLogin }) {
       // SUCCESS LOGIC
       if (response.ok) {
         localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("currentUser", JSON.stringify(data.data));
+        localStorage.setItem("currentUser", JSON.stringify(data.responseData[0].records[0]));
         onLogin();   // 🔥 move to next page
         connectSocket();
       } else {

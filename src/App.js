@@ -172,17 +172,18 @@ function App() {
   const ProcessedVideoDetails = async (date) => {
     try {
       const storedUser = localStorage.getItem("currentUser");
-      const loggedInUser =
-        storedUser && storedUser !== "undefined" ? JSON.parse(storedUser) : null;
-
-      const token = loggedInUser?.access_token || "";
-
-      const today = new Date().toISOString().split("T")[0];
-
-      const url = date
-        ? `http://localhost:3000/api/getVideoProcessedDataHistory?date=${date}`
-        : `http://localhost:3000/api/getVideoProcessedDataHistory`;  // default when cleared
-
+      const loggedInUser = storedUser && storedUser !== "undefined" ? JSON.parse(storedUser) : null;
+      let url = '';
+      if (loggedInUser?.user_roles.includes('Site_access')) {
+        url = date
+          ? `http://localhost:3000/api/getGlobalVideoProcessedDataHistory?date=${date}`
+          : `http://localhost:3000/api/getGlobalVideoProcessedDataHistory`;  // default when cleared
+      }
+      else {
+        url = date
+          ? `http://localhost:3000/api/getVideoProcessedDataHistory?date=${date}`
+          : `http://localhost:3000/api/getVideoProcessedDataHistory`;  // default when cleared
+      }
       const response = await fetch(url, {
         method: "GET",
       });
@@ -730,7 +731,9 @@ function App() {
                   { label: "Total", value: block.totalCount },
                   { label: "Processed", value: block.totalProcessed },
                   { label: "Not Processed", value: block.totalNotProcessed },
-                  { label: "Failed", value: block.totalErrorVideos }
+                  { label: "Failed", value: block.totalErrorVideos },
+                  ...(block.site_name ? [{ label: "Site Name", value: block.site_name }] : []),
+                  ...(block.site_id ? [{ label: "Site ID", value: block.site_id }] : [])
                 ];
 
                 const isDanger = block.totalErrorVideos > 0;
