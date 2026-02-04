@@ -176,8 +176,8 @@ function App() {
       let url = '';
       if (loggedInUser?.user_roles.includes('Site_access')) {
         url = date
-          ? `http://localhost:3000/api/getGlobalVideoProcessedDataHistory?date=${date}`
-          : `http://localhost:3000/api/getGlobalVideoProcessedDataHistory`;  // default when cleared
+          ? `https://gui-backend.seekright.com/api/getGlobalVideoProcessedDataHistory?date=${date}`
+          : `https://gui-backend.seekright.com/api/getGlobalVideoProcessedDataHistory`;  // default when cleared
       }
       else {
         url = date
@@ -491,7 +491,7 @@ function App() {
       <div className="AppHeader">
         <div className="left-section">
           <img
-            src="/static/media/logo.39fbbbbe5208cdbdf802.png"
+            src="/video_upload_react/static/media/logo.39fbbbbe5208cdbdf802.png"
             className="App-logo"
             alt="logo"
           />
